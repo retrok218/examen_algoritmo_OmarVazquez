@@ -43,12 +43,29 @@ class ExamenController extends Controller
     public function repticion_palabras(){
         return view('examen/repeticion');
     }
+
+    function limpiar_texto($texto){
+       // $texto  = utf8_encode($texto);
+        $pattern = "#[^\wñÑáÁéÉíÍóÓúÚ]+#";
+        $texto = trim(preg_replace($pattern," ", $texto)); //limpiar caracteres y espacios en blanco
+        $texto = str_replace (array('á','Á','é','É','í','Í','ó','Ó','ú','Ú',) , array('a','A','e','E','i','I','o','O','u','U',), $texto);
+        $texto = strtolower($texto);
+        return $texto;
+    }
     public function procesando_texto(Request $request){
-        $texto = request('texto_m');
-        $pattern = "#[^(\w|\d|\'|\"|\.|\!|\?|;|,|\\|\/|\-|:|\&|@)]+#";
-        $texto = trim(preg_replace($pattern, " ", $texto));
-        $tarreglo =  str_split($texto);
-        dd($texto);
-        return view('examen/repeticion');
+        $texto = request('texto_m_php');               
+        $texto_limpio = $this->limpiar_texto($texto);                
+        $arreglo_texto = explode(' ',$texto_limpio); // a arreglo
+        $narreglo=[];
+        //$tarreglo =  str_split($texto);
+        //$ttt = array_count_values($arreglo_texto);   :::: facilito     
+        foreach ($arreglo_texto as $palabra) {
+            if (isset ($narreglo[$palabra])) {
+                $narreglo[$palabra] ++;
+            }else {
+                $narreglo[$palabra] = 1;
+            }            
+        }
+        return view('examen/repeticion')->with(['narreglo'=>$narreglo]);
     }
 }
