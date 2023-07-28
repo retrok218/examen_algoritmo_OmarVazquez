@@ -16,8 +16,17 @@
             </div>
         </form>
         <button onclick="recorrer_texto()">Recorrer Texto </button>
-        <h5>Conteo Generado</h5>
-        <ul id="conteo_texto"></ul>
+
+       
+            <div class="row-align-item-statr" >
+                <h5>Conteo Generado</h5>
+                <table class="table table-success table-striped">
+                    <div id="conteo_texto"></div>
+                  </table>                
+            </div>            
+        
+        
+        
     </div>
         
   
